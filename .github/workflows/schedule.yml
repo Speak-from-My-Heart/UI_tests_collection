@@ -1,0 +1,46 @@
+name: Запуск отчёта
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'          # каждые 5 минут (для теста; потом поменяй на реальное расписание)
+                                       # Реальные примеры ниже в комментариях
+  workflow_dispatch:               # ручной запуск через кнопку "Run workflow"
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15            # на всякий случай, если сайт зависнет
+
+    steps:
+      - name: Checkout репозитория
+        uses: actions/checkout@v4
+
+      - name: Установка Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Кэширование pip (ускоряет повторные запуски)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Установка зависимостей Python
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Установка Playwright + Chromium + системных зависимостей
+        run: |
+          python -m playwright install-deps     # ставит libnss3, libgbm и т.д. (важно!)
+          python -m playwright install chromium # только chromium, без firefox/webkit
+
+      - name: Запуск скрипта
+        env:
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          # Если в скрипте есть другие env (например EMAIL), добавь их сюда
+        run: python main.py
