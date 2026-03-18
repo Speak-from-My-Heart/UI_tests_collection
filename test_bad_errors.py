@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 import time
 
 BASE_URL = "https://app.elibrium.io/auth/login"
-VIEWPORT = {"width": 1100, "height": 700}
+VIEWPORT = {"width": 1280, "height": 700}
 SLOW_MO_MS = 300
 
 CREDENTIALS = {
@@ -74,12 +74,12 @@ def main():
         print_caught_errors(page_name="Страница логина")
 
         # Authorisation
-        page.mouse.click(x=700, y=270)
+        page.mouse.click(x=880, y=270)
         page.keyboard.type(CREDENTIALS["email"], delay=10)
         page.keyboard.press("Tab")
         page.wait_for_timeout(1000)
         page.keyboard.type(CREDENTIALS["password"], delay=10)
-        page.mouse.click(x=800, y=530)
+        page.mouse.click(x=880, y=500)
 
         # Home
         page.wait_for_load_state("networkidle", timeout=20000)
