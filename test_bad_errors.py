@@ -2,7 +2,9 @@ from playwright.sync_api import sync_playwright
 import time
 import requests
 import os
-import io
+
+from dotenv import load_dotenv
+load_dotenv()
 
 # ────────────────────────────────────────────────
 # Настройки Telegram (берём из переменных окружения)
@@ -95,7 +97,7 @@ def main():
 
         def global_on_response(response):
             status = response.status
-            if status >= 400:  # чаще всего интересуют именно >=400
+            if status >= 201:  # чаще всего интересуют именно >=400
                 all_errors.append({
                     'status': status,
                     'url': response.url,
@@ -124,6 +126,8 @@ def main():
         page.goto(BASE_URL, wait_until="networkidle", timeout=45000)
         page.wait_for_selector('flutter-view', timeout=45000)
         print("Страница логина загружена")
+        page.wait_for_load_state("networkidle", timeout=30000)    # ждём, пока утихнут все XHR
+        page.wait_for_timeout(3000)
 
         page.mouse.click(x=880, y=270)
         page.keyboard.type(CREDENTIALS["email"], delay=10)
