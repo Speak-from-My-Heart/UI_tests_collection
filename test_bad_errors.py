@@ -97,7 +97,7 @@ def main():
 
         def global_on_response(response):
             status = response.status
-            if status >= 201:  # чаще всего интересуют именно >=400
+            if status >= 300:  # чаще всего интересуют именно >=400
                 all_errors.append({
                     'status': status,
                     'url': response.url,
