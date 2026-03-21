@@ -1,14 +1,14 @@
-name: Запуск отчёта каждые 5 минут (тест) 6 часов теперь
+name: Мониторинг ошибок (каждые 4 часа)
 
 on:
   schedule:
-    - cron: '0 */4 * * *'          # каждые 5 минут (UTC!)
-  workflow_dispatch:               # кнопка "Run workflow" для ручного запуска
+    - cron: '0 */4 * * *'      # каждые 4 часа (UTC)
+  workflow_dispatch:            # кнопка "Run workflow" для ручного запуска
 
 jobs:
-  run-script:
+  monitor:
     runs-on: ubuntu-latest
-    timeout-minutes: 12            # если зависнет — убьёт через 12 мин
+    timeout-minutes: 12
 
     steps:
       - name: Checkout репозитория
@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Кэширование pip (ускоряет повторные запуски)
+      - name: Кэширование pip
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
@@ -36,8 +36,10 @@ jobs:
           python -m playwright install-deps
           python -m playwright install chromium
 
-      - name: Запуск скрипта
+      - name: Запуск мониторинга
         env:
-          TG_TOKEN: ${{ secrets.TG_TOKEN }}
-          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
-        run: python test_bad_errors.py   # ← поменяй на имя своего файла!
+          TG_TOKEN:     ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID:   ${{ secrets.TG_CHAT_ID }}
+          APP_EMAIL:    ${{ secrets.APP_EMAIL }}
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+        run: python monitor.py
