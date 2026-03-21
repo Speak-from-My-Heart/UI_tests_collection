@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 # .env нужен только для локального запуска.
 # В GitHub Actions креды берутся из secrets (env: TG_TOKEN / TG_CHAT_ID в workflow).
-load_dotenv()(override=False)
+load_dotenv(override=False)
 
 # ── Telegram ────────────────────────────────────────────────────────────────
 TG_TOKEN   = os.getenv("TG_TOKEN")
