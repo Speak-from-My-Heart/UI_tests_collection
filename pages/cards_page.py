@@ -14,6 +14,6 @@ class CardsPage(BasePage):
         self.click_coord(COORDS["sidebar"]["cards"])
         self.wait_ms(2_000)
         self.click(*COORDS["cards_tab"])
-        self.wait_ms(1_500)
+        self.wait_ms(3_500)
         self.click_coord(COORDS["header"]["close"])
         self.wait_ms(1_000)

@@ -16,4 +16,4 @@ class AccountsPage(BasePage):
 
         for coord in COORDS["accounts_tabs"]:
             self.click(*coord)
-            self.wait_ms(1_500)
+            self.wait_ms(2_500)
