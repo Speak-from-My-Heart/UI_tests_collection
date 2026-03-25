@@ -10,10 +10,10 @@ TG_TOKEN   = os.getenv("TG_TOKEN")
 TG_CHAT_ID = os.getenv("TG_CHAT_ID")
 
 # ── Приложение ───────────────────────────────────────────────────────────────
-BASE_URL = "https://app.elibrium.io/auth/login"
+BASE_URL = "https://app.axiona.io/auth/login" #https://app.elibrium.io/auth/login https://app.axiona.io/auth/login
 
 CREDENTIALS = {
-    "email":    os.getenv("APP_EMAIL",    "qa+k+brandE@elibrium.io"),
+    "email":    os.getenv("APP_EMAIL",    ""), #qa+k+brandE@elibrium.io
     "password": os.getenv("APP_PASSWORD", ""),   # локально — из .env, в CI — из secrets
 }
 
@@ -31,7 +31,7 @@ BASE_H = 700
 COORDS = {
     "login_email":    (880, 270),
     "login_password": (880, 400),
-    "login_submit":   (880, 500),
+    "login_submit":   (880, 510),
     "sidebar": {
         "accounts":        (150, 210),
         "cards":           (150, 270),
