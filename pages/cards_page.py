@@ -18,6 +18,6 @@ class CardsPage(BasePage):
         self.click_coord(COORDS["header"]["close"])
         self.wait_ms(2_000)
         self.click(*COORDS["show_card"])
-        self.wait_ms(3_500)
+        self.wait_ms(5_000)
         self.click_coord(COORDS["header"]["close"])
         self.wait_ms(1_000)
