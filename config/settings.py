@@ -10,7 +10,7 @@ TG_TOKEN   = os.getenv("TG_TOKEN")
 TG_CHAT_ID = os.getenv("TG_CHAT_ID")
 
 # ── Приложение ───────────────────────────────────────────────────────────────
-BASE_URL = "https://app.axiona.io/auth/login" #https://app.elibrium.io/auth/login https://app.axiona.io/auth/login
+BASE_URL = "https://app.elibrium.io/auth/login" #https://app.elibrium.io/auth/login https://app.axiona.io/auth/login
 
 CREDENTIALS = {
     "email":    os.getenv("APP_EMAIL",    ""), #qa+k+brandE@elibrium.io
