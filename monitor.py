@@ -77,15 +77,16 @@ def run_monitor(headless: bool = True) -> None:
             balance.visit()
             screenshots.append(("Balance Summary", balance.screenshot()))
 
-    # ── Отчёт ─────────────────────────────────────────────────────────────────
-    report = ReportBuilder(collector, site["name"])  # ← передаём имя сайта
+            report = ReportBuilder(collector, site["name"])
 
-    if report.has_errors():
-        print(f"[{site['name']}] Найдено ошибок: {collector.total()}")
-        notifier.send_report_with_screenshots(report.build(), screenshots)
-    else:
-        print(f"[{site['name']}] Ошибок не найдено ✅")
-        notifier.send_text(report.build_ok_message())
+            if report.has_errors():
+                print(f"[{site['name']}] Найдено ошибок: {collector.total()}")
+                notifier.send_report_with_screenshots(report.build(), screenshots)
+            else:
+                print(f"[{site['name']}] Ошибок не найдено ✅")
+                notifier.send_text(report.build_ok_message())
+
+    # ── Отчёт ─────────────────────────────────────────────────────────────────
 
     print("Мониторинг завершён")
 
