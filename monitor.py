@@ -9,6 +9,7 @@ monitor.py — главный файл запуска.
 """
 
 import sys
+from config.settings import SITES
 from core.browser import BrowserManager
 from core.error_collector import ErrorCollector
 from notifications.telegram_notifier import TelegramNotifier
@@ -25,64 +26,65 @@ from pages.balance_summary_page import BalanceSummaryPage
 
 
 def run_monitor(headless: bool = True) -> None:
-    collector   = ErrorCollector()
-    notifier    = TelegramNotifier()
-    screenshots: list[tuple[str, bytes]] = []
+    notifier = TelegramNotifier()
 
-    with BrowserManager(headless=headless) as bm:
+    for site in SITES:
+        print(f"\n{'='*40}\nЗапуск для: {site['name']}\n{'='*40}")
 
-        # Подключаем перехват HTTP-ответов
-        bm.page.on("response", collector.on_response)
+        collector   = ErrorCollector()
+        screenshots = []
 
-        # ── 1. Логин ─────────────────────────────────────────────────────────
-        login = LoginPage(bm, collector)
-        login.open()
-        login.login()
-        screenshots.append(("После логина", login.screenshot()))
+        with BrowserManager(headless=headless) as bm:
+            bm.page.on("response", collector.on_response)
 
-        # ── 2. Home / Deposit ─────────────────────────────────────────────────
-        home = HomePage(bm, collector)
-        home.visit()
-        screenshots.append(("Home / Deposit", home.screenshot()))
+            login = LoginPage(bm, collector, site)   # ← передаём site
+            login.open()
+            login.login()
+            screenshots.append(("После логина", login.screenshot()))
 
-        # ── 3. Accounts ───────────────────────────────────────────────────────
-        accounts = AccountsPage(bm, collector)
-        accounts.visit()
-        screenshots.append(("Accounts", accounts.screenshot()))
+            # ── 2. Home / Deposit ─────────────────────────────────────────────────
+            home = HomePage(bm, collector)
+            home.visit()
+            screenshots.append(("Home / Deposit", home.screenshot()))
 
-        # ── 4. Cards ──────────────────────────────────────────────────────────
-        cards = CardsPage(bm, collector)
-        cards.visit()
-        screenshots.append(("Cards", cards.screenshot()))
+            # ── 3. Accounts ───────────────────────────────────────────────────────
+            accounts = AccountsPage(bm, collector)
+            accounts.visit()
+            screenshots.append(("Accounts", accounts.screenshot()))
 
-        # ── 5. Payments ───────────────────────────────────────────────────────
-        payments = PaymentsPage(bm, collector)
-        payments.visit()
-        screenshots.append(("Payments", payments.screenshot()))
+            # ── 4. Cards ──────────────────────────────────────────────────────────
+            cards = CardsPage(bm, collector)
+            cards.visit()
+            screenshots.append(("Cards", cards.screenshot()))
 
-        # ── 6. Refunds ────────────────────────────────────────────────────────
-        refunds = RefundsPage(bm, collector)
-        refunds.visit()
-        screenshots.append(("Refunds", refunds.screenshot()))
+            # ── 5. Payments ───────────────────────────────────────────────────────
+            payments = PaymentsPage(bm, collector)
+            payments.visit()
+            screenshots.append(("Payments", payments.screenshot()))
 
-        # ── 7. Top Ups ────────────────────────────────────────────────────────
-        top_ups = TopUpsPage(bm, collector)
-        top_ups.visit()
-        screenshots.append(("Top Ups", top_ups.screenshot()))
+            # ── 6. Refunds ────────────────────────────────────────────────────────
+            refunds = RefundsPage(bm, collector)
+            refunds.visit()
+            screenshots.append(("Refunds", refunds.screenshot()))
 
-        # ── 8. Balance Summary ────────────────────────────────────────────────
-        balance = BalanceSummaryPage(bm, collector)
-        balance.visit()
-        screenshots.append(("Balance Summary", balance.screenshot()))
+            # ── 7. Top Ups ────────────────────────────────────────────────────────
+            top_ups = TopUpsPage(bm, collector)
+            top_ups.visit()
+            screenshots.append(("Top Ups", top_ups.screenshot()))
+
+            # ── 8. Balance Summary ────────────────────────────────────────────────
+            balance = BalanceSummaryPage(bm, collector)
+            balance.visit()
+            screenshots.append(("Balance Summary", balance.screenshot()))
 
     # ── Отчёт ─────────────────────────────────────────────────────────────────
-    report = ReportBuilder(collector)
+    report = ReportBuilder(collector, site["name"])  # ← передаём имя сайта
 
     if report.has_errors():
-        print(f"\nНайдено ошибок: {collector.total()} — отправляю полный отчёт со скриншотами")
+        print(f"[{site['name']}] Найдено ошибок: {collector.total()}")
         notifier.send_report_with_screenshots(report.build(), screenshots)
     else:
-        print("\nОшибок не найдено — отправляю короткое уведомление ✅")
+        print(f"[{site['name']}] Ошибок не найдено ✅")
         notifier.send_text(report.build_ok_message())
 
     print("Мониторинг завершён")

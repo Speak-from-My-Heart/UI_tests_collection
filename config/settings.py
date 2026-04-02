@@ -10,12 +10,26 @@ TG_TOKEN   = os.getenv("TG_TOKEN")
 TG_CHAT_ID = os.getenv("TG_CHAT_ID")
 
 # ── Приложение ───────────────────────────────────────────────────────────────
-BASE_URL = "https://app.elibrium.io/auth/login" #https://app.elibrium.io/auth/login https://app.axiona.io/auth/login
+SITES = [
+    {
+        "name":     "Elibrium",
+        "url":      os.getenv("ELIBRIUM_URL",      "https://app.elibrium.io/auth/login"),
+        "email":    os.getenv("ELIBRIUM_EMAIL",    "mementotot+admin@gmail.com"),
+        "password": os.getenv("ELIBRIUM_PASSWORD", ""),
+    },
+    {
+        "name":     "Axiona",
+        "url":      os.getenv("AXIONA_URL",      "https://app.axiona.io/auth/login"),
+        "email":    os.getenv("AXIONA_EMAIL",    "qa+k+axiona.admin@elibrium.io"),
+        "password": os.getenv("AXIONA_PASSWORD", ""),
+    },
+]
+# BASE_URL = "https://app.elibrium.io/auth/login" #https://app.elibrium.io/auth/login https://app.axiona.io/auth/login
 
-CREDENTIALS = {
-    "email":    os.getenv("APP_EMAIL",    ""), #qa+k+brandE@elibrium.io
-    "password": os.getenv("APP_PASSWORD", ""),   # локально — из .env, в CI — из secrets
-}
+# CREDENTIALS = {
+#     "email":    os.getenv("APP_EMAIL",    ""), #qa+k+brandE@elibrium.io
+#     "password": os.getenv("APP_PASSWORD", ""),   # локально — из .env, в CI — из secrets
+# }
 
 # ── Браузер ──────────────────────────────────────────────────────────────────
 VIEWPORT    = {"width": 1280, "height": 700}

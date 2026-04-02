@@ -19,12 +19,13 @@ class ReportBuilder:
         "Balance Summary",
     ]
 
-    def __init__(self, collector: ErrorCollector):
-        self.collector = collector
+    def __init__(self, collector: ErrorCollector, site_name: str = ""):
+        self.collector  = collector
+        self.site_name  = site_name
 
     def build(self) -> str:
         timestamp = time.strftime("%Y-%m-%d %H:%M")
-        lines = [f"*Отчёт проверки {timestamp}*\n"]
+        lines = [f"*Отчёт проверки {self.site_name} {timestamp}*\n"]
 
         for section in self.SECTIONS:
             lines.append(self.collector.format_section(section))
@@ -36,7 +37,7 @@ class ReportBuilder:
         """Короткое сообщение когда всё чисто — без перечисления разделов."""
         timestamp = time.strftime("%Y-%m-%d %H:%M")
         return (
-            f"✅ *Мониторинг {timestamp}*\n"
+            f"✅ *{self.site_name} — Мониторинг {timestamp}*\n..."
             f"Ошибок {self.collector.collector_threshold_label()} не обнаружено.\n"
             f"Проверено разделов: {len(self.SECTIONS)}"
         )
