@@ -38,8 +38,10 @@ jobs:
 
       - name: Запуск мониторинга
         env:
-          TG_TOKEN:     ${{ secrets.TG_TOKEN }}
-          TG_CHAT_ID:   ${{ secrets.TG_CHAT_ID }}
-          APP_EMAIL:    ${{ secrets.APP_EMAIL }}
-          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+          TG_TOKEN:          ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID:        ${{ secrets.TG_CHAT_ID }}
+          ELIBRIUM_EMAIL:    ${{ secrets.ELIBRIUM_EMAIL }}
+          ELIBRIUM_PASSWORD: ${{ secrets.ELIBRIUM_PASSWORD }}
+          AXIONA_EMAIL:      ${{ secrets.AXIONA_EMAIL }}
+          AXIONA_PASSWORD:   ${{ secrets.AXIONA_PASSWORD }}
         run: python monitor.py
