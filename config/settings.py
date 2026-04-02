@@ -20,7 +20,7 @@ SITES = [
     {
         "name":     "Axiona",
         "url":      os.getenv("AXIONA_URL",      "https://app.axiona.io/auth/login"),
-        "email":    os.getenv("AXIONA_EMAIL",    "qa+k+axiona.admin@elibrium.io"),
+        "email":    os.getenv("AXIONA_EMAIL",    ""), #qa+k+axiona.admin@elibrium.io
         "password": os.getenv("AXIONA_PASSWORD", ""),
     },
 ]
