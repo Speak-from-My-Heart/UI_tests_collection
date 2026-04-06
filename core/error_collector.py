@@ -8,7 +8,7 @@ ErrorCollector — перехватывает HTTP-ответы от Playwright 
   и все ответы, пришедшие после этого, будут помечены этим тегом.
 """
 
-from config.settings import ERROR_STATUS_THRESHOLD
+from config.settings import ERROR_STATUS_THRESHOLD, IGNORE_URL_PATTERNS
 
 
 class ErrorCollector:
@@ -26,6 +26,9 @@ class ErrorCollector:
         """Передай этот метод в page.on('response', collector.on_response)."""
         status = response.status
         if status >= ERROR_STATUS_THRESHOLD:
+            # игнорируем известные незначимые ошибки
+            if any(p in response.url for p in IGNORE_URL_PATTERNS):
+                return
             entry = {
                 "status": status,
                 "url":    response.url,
