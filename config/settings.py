@@ -57,6 +57,7 @@ COORDS = {
     "header": {
         "make_a_deposit": (1140, 160),
         "close":          (1200, 40),
+        "card_credentials":(925,495)
     },
     # Табы внутри страниц
     "accounts_tabs": [
