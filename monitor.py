@@ -95,3 +95,5 @@ if __name__ == "__main__":
     # Передай --show чтобы запустить с видимым браузером (для отладки локально)
     headless = "--show" not in sys.argv
     run_monitor(headless=headless)
+
+#смотреть координаты document.addEventListener('mousemove', e => console.log(`X: ${e.clientX}, Y: ${e.clientY}`));
