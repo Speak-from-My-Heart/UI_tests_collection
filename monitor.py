@@ -79,12 +79,14 @@ def run_monitor(headless: bool = True) -> None:
 
             report = ReportBuilder(collector, site["name"])
 
-            if report.has_errors():
-                print(f"[{site['name']}] Найдено ошибок: {collector.total()}")
-                notifier.send_report_with_screenshots(report.build(), screenshots)
-            else:
-                print(f"[{site['name']}] Ошибок не найдено ✅")
-                notifier.send_text(report.build_ok_message())
+            print(f"[{site['name']}] Найдено ошибок: {collector.total()}")
+            notifier.send_report_with_screenshots(report.build(), screenshots)
+            # if report.has_errors():
+            #     print(f"[{site['name']}] Найдено ошибок: {collector.total()}")
+            #     notifier.send_report_with_screenshots(report.build(), screenshots)
+            # else:
+            #     print(f"[{site['name']}] Ошибок не найдено ✅")
+            #     notifier.send_text(report.build_ok_message())
 
     # ── Отчёт ─────────────────────────────────────────────────────────────────
 
