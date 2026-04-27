@@ -13,13 +13,13 @@ TG_CHAT_ID = os.getenv("TG_CHAT_ID")
 SITES = [
     {
         "name":     "Elibrium",
-        "url":      os.getenv("ELIBRIUM_URL",      "https://app.elibrium.io/auth/login"),
+        "url":      os.getenv("ELIBRIUM_URL",      "https://app.elibrium.io/auth/login"), #https://app.elibrium.io/auth/login
         "email":    os.getenv("ELIBRIUM_EMAIL",    "mementotot+admin@gmail.com"),
         "password": os.getenv("ELIBRIUM_PASSWORD", ""),
     },
     {
         "name":     "Axiona",
-        "url":      os.getenv("AXIONA_URL",      "https://app.axiona.io/auth/login"),
+        "url":      os.getenv("AXIONA_URL",      "https://app.axiona.io/auth/login"), #https://app.axiona.io/auth/login
         "email":    os.getenv("AXIONA_EMAIL",    ""), #qa+k+axiona.admin@elibrium.io
         "password": os.getenv("AXIONA_PASSWORD", ""),
     },
@@ -43,9 +43,9 @@ BASE_W = 1280
 BASE_H = 700
 
 COORDS = {
-    "login_email":    (880, 270),
-    "login_password": (880, 400),
-    "login_submit":   (880, 510),
+    "login_email":    (880, 285),
+    #"login_password": (880, 380),
+    "login_submit":   (880, 490),
     "sidebar": {
         "accounts":        (150, 210),
         "cards":           (150, 270),
