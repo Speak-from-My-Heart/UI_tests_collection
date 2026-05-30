@@ -49,6 +49,21 @@ class BrowserManager:
 
     def click(self, x: int, y: int) -> None:
         sx, sy = self.scale(x, y)
+        if not self._headless:
+            self.page.evaluate(f"""() => {{
+                const d = document.createElement('div');
+                d.style.cssText = `
+                    position: fixed; z-index: 999999; pointer-events: none;
+                    left: {sx - 20}px; top: {sy - 20}px;
+                    width: 40px; height: 40px; border-radius: 50%;
+                    background: rgba(255, 80, 80, 0.5);
+                    border: 3px solid red;
+                    transition: opacity 0.6s;
+                `;
+                document.body.appendChild(d);
+                setTimeout(() => d.style.opacity = '0', 100);
+                setTimeout(() => d.remove(), 700);
+            }}""")
         self.page.mouse.click(sx, sy)
 
     def scroll_sidebar(self, delta_y: int = 400) -> None:

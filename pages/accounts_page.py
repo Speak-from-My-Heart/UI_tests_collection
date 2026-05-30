@@ -1,6 +1,8 @@
 from pages.base_page import BasePage
 from config.settings import COORDS
 
+_TAB_NAMES = ["Transfers", "Balance History"]
+
 
 class AccountsPage(BasePage):
 
@@ -9,11 +11,10 @@ class AccountsPage(BasePage):
         self.wait_ms(2_000)
 
         result = []
-        for i, coord in enumerate(COORDS["accounts_tabs"], start=1):
-            name = f"Accounts / Таб {i}"
-            self.tag(name)
-            print(name)
+        for name, coord in zip(_TAB_NAMES, COORDS["accounts_tabs"]):
+            self.tag(f"Accounts / {name}")
+            print(f"Accounts / {name}")
             self.click(*coord)
             self.wait_ms(2_500)
-            result.append((name, self.screenshot()))
+            result.append((f"Accounts / {name}", self.screenshot()))
         return result
