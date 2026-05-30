@@ -55,8 +55,7 @@ def run_monitor(headless: bool = True, screenshots_mode: bool = False) -> None:
 
             # ── 4. Cards ──────────────────────────────────────────────────────────
             cards = CardsPage(bm, collector)
-            cards.visit()
-            screenshots.append(("Cards", cards.screenshot()))
+            screenshots.extend(cards.visit())
 
             # ── 5. Payments ───────────────────────────────────────────────────────
             payments = PaymentsPage(bm, collector)
