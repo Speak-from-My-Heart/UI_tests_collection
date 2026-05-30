@@ -3,7 +3,12 @@ name: Мониторинг ошибок (каждые 2 часа)
 on:
   schedule:
     - cron: '0 */2 * * *'      # каждые 2 часа (UTC)
-  workflow_dispatch:            # кнопка "Run workflow" для ручного запуска
+  workflow_dispatch:
+    inputs:
+      screenshots:
+        description: 'Тестовая выгрузка скринов всех страниц в Telegram'
+        type: boolean
+        default: false
 
 jobs:
   monitor:
@@ -52,4 +57,4 @@ jobs:
           ELIBRIUM_PASSWORD: ${{ secrets.ELIBRIUM_PASSWORD }}
           AXIONA_EMAIL:      ${{ secrets.AXIONA_EMAIL }}
           AXIONA_PASSWORD:   ${{ secrets.AXIONA_PASSWORD }}
-        run: python monitor.py
+        run: python monitor.py ${{ github.event.inputs.screenshots == 'true' && '--screenshots' || '' }}

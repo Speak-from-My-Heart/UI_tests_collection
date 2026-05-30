@@ -40,6 +40,16 @@ class TelegramNotifier:
             data["parse_mode"] = "Markdown"
         self._post(url, files=files, data=data)
 
+    def send_screenshots_report(
+        self,
+        site_name: str,
+        screenshots: list[tuple[str, bytes]],
+    ) -> None:
+        self.send_text(f"🖼 *Тестовая выгрузка скринов* — {site_name}")
+        for name, png_bytes in screenshots:
+            self.send_photo(png_bytes, f"Скриншот: *{name}*")
+            time.sleep(1.2)
+
     def send_report_with_screenshots(
         self,
         report_text: str,

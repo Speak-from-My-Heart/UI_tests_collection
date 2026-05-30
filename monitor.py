@@ -8,7 +8,7 @@ monitor.py — главный файл запуска.
 В CI:       python monitor.py  (креды приходят из GitHub Secrets через env:)
 """
 
-import sys
+import argparse
 from config.settings import SITES
 from core.browser import BrowserManager
 from core.error_collector import ErrorCollector
@@ -25,7 +25,7 @@ from pages.top_ups_page import TopUpsPage
 from pages.balance_summary_page import BalanceSummaryPage
 
 
-def run_monitor(headless: bool = True) -> None:
+def run_monitor(headless: bool = True, screenshots_mode: bool = False) -> None:
     notifier = TelegramNotifier()
 
     for site in SITES:
@@ -79,7 +79,10 @@ def run_monitor(headless: bool = True) -> None:
 
             report = ReportBuilder(collector, site["name"])
 
-            if report.has_errors():
+            if screenshots_mode:
+                print(f"[{site['name']}] Режим выгрузки скринов")
+                notifier.send_screenshots_report(site["name"], screenshots)
+            elif report.has_errors():
                 print(f"[{site['name']}] Найдено ошибок: {collector.total()}")
                 notifier.send_report_with_screenshots(report.build(), screenshots)
             else:
@@ -92,8 +95,10 @@ def run_monitor(headless: bool = True) -> None:
 
 
 if __name__ == "__main__":
-    # Передай --show чтобы запустить с видимым браузером (для отладки локально)
-    headless = "--show" not in sys.argv
-    run_monitor(headless=headless)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--show",        action="store_true", help="видимый браузер (для отладки)")
+    parser.add_argument("--screenshots", action="store_true", help="тестовая выгрузка скринов в TG")
+    args = parser.parse_args()
+    run_monitor(headless=not args.show, screenshots_mode=args.screenshots)
 
 #смотреть координаты document.addEventListener('mousemove', e => console.log(`X: ${e.clientX}, Y: ${e.clientY}`));
