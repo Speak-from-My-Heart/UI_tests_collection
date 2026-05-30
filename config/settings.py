@@ -53,6 +53,8 @@ COORDS = {
         "refunds":         (150, 400),
         "top_ups":         (150, 320),
         "balance_summary": (150, 400),
+        "company":         (150, 430),
+        "profile":         (150, 490),
     },
     "header": {
         "make_a_deposit": (1140, 160),
@@ -65,6 +67,17 @@ COORDS = {
         (850, 50),   # второй таб
     ],
     "cards_tab":     (1050, 50),
+    "company_tabs": [
+        (490, 143),   # Members
+        (640, 143),   # Teams
+        (770, 143),   # Info
+        (950, 143),   # Spending Policies
+    ],
+    "profile_tabs": [
+        (490, 143),   # Account
+        (640, 143),   # Notifications
+        (770, 143),   # API
+    ],
     "show_card":     (500, 340),
 }
 

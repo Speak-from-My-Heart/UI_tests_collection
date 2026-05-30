@@ -23,6 +23,8 @@ from pages.payments_page import PaymentsPage
 from pages.refunds_page import RefundsPage
 from pages.top_ups_page import TopUpsPage
 from pages.balance_summary_page import BalanceSummaryPage
+from pages.company_page import CompanyPage
+from pages.profile_page import ProfilePage
 
 
 def run_monitor(headless: bool = True, screenshots_mode: bool = False) -> None:
@@ -49,8 +51,7 @@ def run_monitor(headless: bool = True, screenshots_mode: bool = False) -> None:
 
             # ── 3. Accounts ───────────────────────────────────────────────────────
             accounts = AccountsPage(bm, collector)
-            accounts.visit()
-            screenshots.append(("Accounts", accounts.screenshot()))
+            screenshots.extend(accounts.visit())
 
             # ── 4. Cards ──────────────────────────────────────────────────────────
             cards = CardsPage(bm, collector)
@@ -76,6 +77,14 @@ def run_monitor(headless: bool = True, screenshots_mode: bool = False) -> None:
             balance = BalanceSummaryPage(bm, collector)
             balance.visit()
             screenshots.append(("Balance Summary", balance.screenshot()))
+
+            # ── 9. Company ────────────────────────────────────────────────────────
+            company = CompanyPage(bm, collector)
+            screenshots.extend(company.visit())
+
+            # ── 10. Profile ───────────────────────────────────────────────────────
+            profile = ProfilePage(bm, collector)
+            screenshots.extend(profile.visit())
 
             report = ReportBuilder(collector, site["name"])
 
