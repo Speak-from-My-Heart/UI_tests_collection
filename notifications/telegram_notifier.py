@@ -55,8 +55,7 @@ class TelegramNotifier:
         report_text: str,
         screenshots: list[tuple[str, bytes]],
     ) -> None:
-        if not self.send_text(report_text):
-            return  # текст не дошёл — не шлём скрины без контекста
+        self.send_text(report_text)
         for name, png_bytes in screenshots:
             self.send_photo(png_bytes, f"Скриншот: *{name}*")
             time.sleep(1.2)
