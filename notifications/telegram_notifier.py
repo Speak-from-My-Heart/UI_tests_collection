@@ -18,16 +18,16 @@ class TelegramNotifier:
 
     # ── Публичный API ────────────────────────────────────────────────────────
 
-    def send_text(self, text: str) -> None:
+    def send_text(self, text: str) -> bool:
         if not self._enabled:
-            return
+            return True
         url = f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage"
         payload = {
             "chat_id":    TG_CHAT_ID,
             "text":       text,
             "parse_mode": "Markdown",
         }
-        self._post(url, json=payload)
+        return self._post(url, json=payload)
 
     def send_photo(self, photo_bytes: bytes, caption: str = "") -> None:
         if not self._enabled:
@@ -55,24 +55,19 @@ class TelegramNotifier:
         report_text: str,
         screenshots: list[tuple[str, bytes]],
     ) -> None:
-        """
-        Отправляет отчёт и скриншоты ТОЛЬКО если есть ошибки.
-        screenshots — список пар (название, png_bytes).
-        Вызывай этот метод всегда; он сам решит, слать или нет.
-        """
-        # Проверяем: есть ли в отчёте что-то кроме "всё ок"
-        # Логика "слать или нет" лежит в monitor.py — туда передаётся has_errors.
-        # Этот метод просто отправляет.
-        self.send_text(report_text)
+        if not self.send_text(report_text):
+            return  # текст не дошёл — не шлём скрины без контекста
         for name, png_bytes in screenshots:
             self.send_photo(png_bytes, f"Скриншот: *{name}*")
-            time.sleep(1.2)   # пауза чтобы Telegram не ругался на flood
+            time.sleep(1.2)
 
     # ── Внутреннее ──────────────────────────────────────────────────────────
 
-    def _post(self, url: str, **kwargs) -> None:
+    def _post(self, url: str, **kwargs) -> bool:
         try:
             r = requests.post(url, timeout=15, **kwargs)
             r.raise_for_status()
+            return True
         except Exception as e:
             print(f"Ошибка отправки в Telegram: {e}")
+            return False

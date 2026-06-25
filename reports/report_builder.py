@@ -7,16 +7,25 @@ from core.error_collector import ErrorCollector
 
 
 class ReportBuilder:
-    # Все разделы в порядке обхода
+    # Все разделы в порядке обхода (должны совпадать с тегами в pages/)
     SECTIONS = [
         "Login",
         "Home / Deposit",
-        "Accounts",
+        "Accounts / Transfers",
+        "Accounts / Balance History",
         "Cards",
+        "Cards / Card Credentials",
         "Payments",
         "Refunds",
         "Top Ups",
         "Balance Summary",
+        "Company / Members",
+        "Company / Teams",
+        "Company / Info",
+        "Company / Spending Policies",
+        "Profile / Account",
+        "Profile / Notifications",
+        "Profile / API",
     ]
 
     def __init__(self, collector: ErrorCollector, site_name: str = ""):
@@ -28,19 +37,16 @@ class ReportBuilder:
         lines = [f"*Отчёт проверки {self.site_name} {timestamp}*\n"]
 
         for section in self.SECTIONS:
-            lines.append(self.collector.format_section(section))
+            errors = self.collector.errors_for_tag(section)
+            if errors:
+                lines.append(self.collector.format_section(section))
 
         lines.append(f"\n*Всего ошибок {self.collector.collector_threshold_label()}: {self.collector.total()}*")
         return "\n".join(lines)
 
     def build_ok_message(self) -> str:
-        """Короткое сообщение когда всё чисто — без перечисления разделов."""
         timestamp = time.strftime("%Y-%m-%d %H:%M")
-        return (
-            f"✅ *{self.site_name} — Мониторинг {timestamp}*\n..."
-            f"Ошибок {self.collector.collector_threshold_label()} не обнаружено.\n"
-            f"Проверено разделов: {len(self.SECTIONS)}"
-        )
+        return f"✅ *{self.site_name} ({timestamp}) — ошибок нет*"
 
     def has_errors(self) -> bool:
         return self.collector.total() > 0
