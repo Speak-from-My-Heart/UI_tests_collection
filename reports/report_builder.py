@@ -46,7 +46,8 @@ class ReportBuilder:
 
     def build_ok_message(self) -> str:
         timestamp = time.strftime("%Y-%m-%d %H:%M")
-        return f"✅ *{self.site_name} ({timestamp}) — ошибок нет*"
+        icon = "🟡" if self.site_name == "Axiona" else "✅"
+        return f"{icon} *{self.site_name} ({timestamp}) — ошибок нет*"
 
     def has_errors(self) -> bool:
         return self.collector.total() > 0
