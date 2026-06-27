@@ -92,7 +92,9 @@ def run_monitor(headless: bool = True, screenshots_mode: bool = False) -> None:
                 notifier.send_screenshots_report(site["name"], screenshots)
             elif report.has_errors():
                 print(f"[{site['name']}] Найдено ошибок: {collector.total()}")
-                notifier.send_report_with_screenshots(report.build(), screenshots)
+                error_tags = {e["tag"] for e in collector.all_errors()}
+                error_screenshots = [(n, p) for n, p in screenshots if n in error_tags]
+                notifier.send_report_with_screenshots(report.build(), error_screenshots)
             else:
                 print(f"[{site['name']}] Ошибок не найдено ✅")
                 notifier.send_text(report.build_ok_message())

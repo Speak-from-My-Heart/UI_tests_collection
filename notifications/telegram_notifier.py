@@ -22,12 +22,16 @@ class TelegramNotifier:
         if not self._enabled:
             return True
         url = f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage"
-        payload = {
-            "chat_id":    TG_CHAT_ID,
-            "text":       text,
-            "parse_mode": "Markdown",
-        }
-        return self._post(url, json=payload)
+        chunks = [text[i:i+4000] for i in range(0, len(text), 4000)]
+        ok = True
+        for chunk in chunks:
+            payload = {"chat_id": TG_CHAT_ID, "text": chunk, "parse_mode": "Markdown"}
+            if not self._post(url, json=payload):
+                # Markdown сломался (спецсимволы в URL и т.п.) — шлём plain text
+                payload.pop("parse_mode")
+                if not self._post(url, json=payload):
+                    ok = False
+        return ok
 
     def send_photo(self, photo_bytes: bytes, caption: str = "") -> None:
         if not self._enabled:
