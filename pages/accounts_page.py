@@ -8,7 +8,7 @@ class AccountsPage(BasePage):
 
     def visit(self) -> list[tuple[str, bytes]]:
         self.click_coord(COORDS["sidebar"]["accounts"])
-        self.wait_ms(2_000)
+        self.wait_ms(3_000)
 
         _tab_wait = {"Balance History": 8_000}
 
@@ -17,6 +17,6 @@ class AccountsPage(BasePage):
             self.tag(f"Accounts / {name}")
             print(f"Accounts / {name}")
             self.click(*coord)
-            self.wait_ms(_tab_wait.get(name, 2_500))
+            self.wait_ms(_tab_wait.get(name, 8_500))
             result.append((f"Accounts / {name}", self.screenshot()))
         return result
