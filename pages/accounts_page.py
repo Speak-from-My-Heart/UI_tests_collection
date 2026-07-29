@@ -8,9 +8,9 @@ class AccountsPage(BasePage):
 
     def visit(self) -> list[tuple[str, bytes]]:
         self.click_coord(COORDS["sidebar"]["accounts"])
-        self.wait_ms(3_000)
+        self.wait_ms(5_000)
 
-        _tab_wait = {"Balance History": 8_000}
+        _tab_wait = {"Balance History": 12_000}
 
         result = []
         for name, coord in zip(_TAB_NAMES, COORDS["accounts_tabs"]):
