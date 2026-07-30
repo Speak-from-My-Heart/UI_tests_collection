@@ -17,6 +17,8 @@ class AccountsPage(BasePage):
             self.tag(f"Accounts / {name}")
             print(f"Accounts / {name}")
             self.click(*coord)
-            self.wait_ms(_tab_wait.get(name, 8_500))
+            self.wait_ms(2_000)  # ждём пока запрос уйдёт
+            self.wait_network(timeout=45_000)  # ждём networkidle до 45 сек
+            self.wait_ms(_tab_wait.get(name, 3_000))  # буфер для Flutter-рендера
             result.append((f"Accounts / {name}", self.screenshot()))
         return result

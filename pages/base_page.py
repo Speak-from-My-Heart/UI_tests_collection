@@ -43,10 +43,10 @@ class BasePage:
         поэтому перестраховываемся дополнительной паузой.
         """
         try:
-            self.page.wait_for_load_state("networkidle", timeout=15_000)
+            self.page.wait_for_load_state("networkidle", timeout=30_000)
         except Exception:
-            pass  # если networkidle не пришёл за 15 сек — всё равно делаем скрин
-        self.wait_ms(2_500)
+            pass  # если networkidle не пришёл за 30 сек — всё равно делаем скрин
+        self.wait_ms(3_500)
         return self.page.screenshot(full_page=True)
 
     # ── Тег для коллектора ───────────────────────────────────────────────────
