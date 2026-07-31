@@ -8,17 +8,17 @@ class AccountsPage(BasePage):
 
     def visit(self) -> list[tuple[str, bytes]]:
         self.click_coord(COORDS["sidebar"]["accounts"])
-        self.wait_ms(5_000)
+        self.wait_ms(10_000)
 
-        _tab_wait = {"Balance History": 12_000}
+        _tab_wait = {"Balance History": 24_000}
 
         result = []
         for name, coord in zip(_TAB_NAMES, COORDS["accounts_tabs"]):
             self.tag(f"Accounts / {name}")
             print(f"Accounts / {name}")
             self.click(*coord)
-            self.wait_ms(2_000)  # ждём пока запрос уйдёт
-            self.wait_network(timeout=45_000)  # ждём networkidle до 45 сек
-            self.wait_ms(_tab_wait.get(name, 3_000))  # буфер для Flutter-рендера
+            self.wait_ms(4_000)  # ждём пока запрос уйдёт
+            self.wait_network(timeout=90_000)  # ждём networkidle до 90 сек
+            self.wait_ms(_tab_wait.get(name, 6_000))  # буфер для Flutter-рендера
             result.append((f"Accounts / {name}", self.screenshot()))
         return result
