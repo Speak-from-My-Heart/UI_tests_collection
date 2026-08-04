@@ -2,6 +2,7 @@ from pages.base_page import BasePage
 from config.settings import COORDS
 
 _TAB_NAMES = ["Transfers", "Balance History"]
+_MAX_RETRIES = 3
 
 
 class AccountsPage(BasePage):
@@ -14,11 +15,21 @@ class AccountsPage(BasePage):
 
         result = []
         for name, coord in zip(_TAB_NAMES, COORDS["accounts_tabs"]):
-            self.tag(f"Accounts / {name}")
-            print(f"Accounts / {name}")
-            self.click(*coord)
-            self.wait_ms(4_000)  # ждём пока запрос уйдёт
-            self.wait_network(timeout=90_000)  # ждём networkidle до 90 сек
-            self.wait_ms(_tab_wait.get(name, 6_000))  # буфер для Flutter-рендера
-            result.append((f"Accounts / {name}", self.screenshot()))
+            tag = f"Accounts / {name}"
+            self.tag(tag)
+            print(tag)
+
+            for attempt in range(_MAX_RETRIES):
+                self.click(*coord)
+                self.wait_ms(4_000)
+                self.wait_network(timeout=90_000)
+                self.wait_ms(_tab_wait.get(name, 6_000))
+
+                if not self.collector.errors_for_tag(tag) or attempt == _MAX_RETRIES - 1:
+                    break
+
+                print(f"{tag}: ошибки на попытке {attempt + 1}, ретрай...")
+                self.collector.clear_tag(tag)
+
+            result.append((tag, self.screenshot()))
         return result

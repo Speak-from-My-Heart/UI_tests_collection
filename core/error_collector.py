@@ -38,6 +38,10 @@ class ErrorCollector:
             self._errors.append(entry)
             print(f"[{self._current_tag}] {entry['method']} {entry['url']} → {status}")
 
+    def clear_tag(self, tag: str) -> None:
+        """Удаляет все ошибки с данным тегом — используй перед ретраем."""
+        self._errors = [e for e in self._errors if e["tag"] != tag]
+
     def errors_for_tag(self, tag: str) -> list[dict]:
         """Возвращает все ошибки, помеченные данным тегом."""
         return [e for e in self._errors if e["tag"] == tag]
