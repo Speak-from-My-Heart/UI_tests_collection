@@ -17,12 +17,13 @@ SITES = [
         "email":    os.getenv("ELIBRIUM_EMAIL",    "mementotot+admin@gmail.com"),
         "password": os.getenv("ELIBRIUM_PASSWORD", ""),
     },
-    {
-        "name":     "Axiona",
-        "url":      os.getenv("AXIONA_URL",      "https://app.axiona.io/auth/login"), #https://app.axiona.io/auth/login
-        "email":    os.getenv("AXIONA_EMAIL",    ""), #qa+k+axiona.admin@elibrium.io
-        "password": os.getenv("AXIONA_PASSWORD", ""),
-    },
+    # Axiona временно отключена — проект приостановлен, вернуть при необходимости
+    # {
+    #     "name":     "Axiona",
+    #     "url":      os.getenv("AXIONA_URL",      "https://app.axiona.io/auth/login"), #https://app.axiona.io/auth/login
+    #     "email":    os.getenv("AXIONA_EMAIL",    ""), #qa+k+axiona.admin@elibrium.io
+    #     "password": os.getenv("AXIONA_PASSWORD", ""),
+    # },
 ]
 # BASE_URL = "https://app.elibrium.io/auth/login" #https://app.elibrium.io/auth/login https://app.axiona.io/auth/login
 
