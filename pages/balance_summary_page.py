@@ -12,7 +12,7 @@ class BalanceSummaryPage(BasePage):
     def visit(self) -> None:
         self.tag("Balance Summary")
         print("Balance Summary")
-        self.bm.scroll_sidebar(400)
+        self.bm.scroll_sidebar(180)
         self.wait_ms(1_000)
         self.click_coord(COORDS["sidebar"]["balance_summary"])
         self.wait_ms(4_000)

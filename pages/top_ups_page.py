@@ -12,7 +12,7 @@ class TopUpsPage(BasePage):
     def visit(self) -> None:
         self.tag("Top Ups")
         print("Top Ups")
-        self.bm.scroll_sidebar(400)
+        self.bm.scroll_sidebar(120)
         self.wait_ms(500)
         self.click_coord(COORDS["sidebar"]["top_ups"])
         self.wait_ms(2_000)
