@@ -54,7 +54,7 @@ COORDS = {
         "refunds":         (150, 400),
         "top_ups":         (150, 320),
         "balance_summary": (150, 400),
-        "company":         (150, 495),
+        "company":         (150, 435),
         "profile":         (150, 555),
     },
     "header": {
